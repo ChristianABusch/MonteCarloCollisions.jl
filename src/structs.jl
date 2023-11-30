@@ -85,12 +85,12 @@ end
 
 
 
-v⃗₁  = [1.7e6, 0.0, 0.0]
+v⃗₁  = [0.0, 1e6, 0.0]
 v⃗₂  = fill(100, 3)
 m₁  = 9.109e-31
 m₂  = 1.66e-27
 n   = 1e24
-dt  = 1e-12
+dt  = 1e-11
 
 
 cs_test = linear_interpolation([0.0, 1000.0], [1e-20, 1e-20])
@@ -99,12 +99,26 @@ cs_test = linear_interpolation([0.0, 1000.0], [1e-20, 1e-20])
 @time particle_collision(cs_test, n, dt, v⃗₁, m₁, v⃗₂, m₂)
 
 
-N = 1000000
-x = zeros(N)
-@time for i in 2:N
-    global v⃗₁
-    x[i] = x[i-1] + v⃗₁[1] * dt
-    v⃗₁ = particle_collision(cs_test, n, dt, v⃗₁, m₁, v⃗₂, m₂)
-end
+Nt = 1000
+Np = 10000
 
-lines(x)
+
+fig = Figure()
+ax = Axis(fig[1,1])
+Nts = [100, 300, 1000]
+
+for it in Nts
+    x  = zeros(Np)
+
+    @time for ip in 1:Np
+        v⃗p = copy(v⃗₁)
+        for i in 2:it
+            x[ip] = x[ip] + v⃗p[1] * dt
+            v⃗p = particle_collision(cs_test, n, dt, v⃗p, m₁, v⃗₂, m₂)
+        end
+    end
+    hist!(ax, x, normalization = :density)
+end
+fig
+
+
