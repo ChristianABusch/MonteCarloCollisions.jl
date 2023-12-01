@@ -27,12 +27,17 @@ function post_collision_rotations(g ,θ, ϕ, χ, η)
     return g⃗′
 end
 
-function isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
+function isotropic_elastic_collision(v⃗₁, v⃗₂, m₁, m₂)
     # m₁: mass of the scattered particle
     # m₂: mass of the target particle
     # g⃗: relative velocity vector
     # w⃗: center of mass velocity vector
 
+    # relative and center of mass velocity
+    g⃗ = relative_velocity(v⃗₁, v⃗₂)
+    w⃗ = center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
+
+    # Euler angles
     θ, ϕ = Euler_angles(g⃗)
 
     # scattering angles
@@ -46,12 +51,17 @@ function isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
     return w⃗ .+ m₂/(m₁+m₂) .* g⃗′
 end
 
-function backscatter_elastic_collision(g⃗, w⃗, m₁, m₂)
+function backscatter_elastic_collision(v⃗₁, v⃗₂, m₁, m₂)
     # m₁: mass of the scattered particle
     # m₂: mass of the target particle
     # g⃗: relative velocity vector
     # w⃗: center of mass velocity vector
 
+    # relative and center of mass velocity
+    g⃗ = relative_velocity(v⃗₁, v⃗₂)
+    w⃗ = center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
+
+    # Euler angles
     θ, ϕ = Euler_angles(g⃗)
 
     # scattering angles
@@ -65,19 +75,24 @@ function backscatter_elastic_collision(g⃗, w⃗, m₁, m₂)
     return w⃗ .+ m₂/(m₁+m₂) .* g⃗′
 end
 
-function excitation_collision(g⃗, w⃗, mₑ, M, E_exc)
-    # mₑ: electron mass
-    # M: mass of the target particle
-    # g⃗: relative velocity vector
-    # w⃗: center of mass velocity vector
+function excitation_collision(v⃗₁, v⃗₂, m₁, m₂, E_exc)
+    # m₁: electron mass
+    # m₂: mass of the target particle
+    # v⃗₁: velcoiity of electron
+    # v⃗₂: velocity of collision partner
     # E_exc: excitation energy in eV
 
-    θ, ϕ = Euler_angles(g⃗)
+    # relative and center of mass velocity and reduced mass
+    g⃗ = relative_velocity(v⃗₁, v⃗₂)
+    w⃗ = center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
     g = absolute_value(g⃗)
-    μ = reduced_mass(mₑ, M)
+    μ = reduced_mass(m₁, m₂)
+
+    # Euler angles
+    θ, ϕ = Euler_angles(g⃗)
 
     # Calculate new energy
-    E = energy_in_collision(μ, g)  # electron energy
+    E = kinetic_energy(μ, g)  # electron energy
     E = E - to_J(E_exc)            # subtract energy loss for excitation
     
     # scattering angles
@@ -87,30 +102,35 @@ function excitation_collision(g⃗, w⃗, mₑ, M, E_exc)
 
     # compute new velocities
     g⃗′ = post_collision_rotations(g ,θ, ϕ, χ, η)
-    return w⃗ .+ M/(mₑ+M) .* g⃗′
+    return w⃗ .+ m₂/(m₁+m₂) .* g⃗′
 end
 
-function ionization_collision(g⃗, w⃗, mₑ, M, E_iz, Ē)
-    # mₑ: electron mass
-    # M: mass of the target particle
-    # g⃗: relative velocity vector
-    # w⃗: center of mass velocity vector
+function ionization_collision(v⃗₁, v⃗₂, m₁, m₂, E_iz, Ē)
+    # m₁: electron mass
+    # m₂: mass of the target particle
+    # v⃗₁: velcoiity of electron
+    # v⃗₂: velocity of collision partner
     # E_iz: ionization energy in eV
     # Ē: electron spectrum shape parameter for ionzation (J. Chem. Phys. 55, 4100–4106 (1971))
 
-    θ, ϕ = Euler_angles(g⃗)
+    # relative and center of mass velocity and reduced mass
+    g⃗ = relative_velocity(v⃗₁, v⃗₂)
+    w⃗ = center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
     g = absolute_value(g⃗)
-    μ = reduced_mass(mₑ, M)
+    μ = reduced_mass(m₁, m₂)
+
+    # Euler angles
+    θ, ϕ = Euler_angles(g⃗)
 
     # Calculate new energies
-    E = energy_in_collision(μ, g) # electron energy
+    E = kinetic_energy(μ, g) # electron energy
     E = E - to_J(E_iz)            # subtract energy loss for ionization
     
     E_new  = to_J(10.0 * tan(rand() * atan(to_eV(E)/(2*Ē)))) # energy of new electron (J. Chem. Phys. 55, 4100–4106 (1971))
     E_orig = E - E_new                                       # energy of old electron
     
-    g     = √(2.0 * E_orig / mₑ)  # relative velocity of incoming (original) electron
-    g_new = √(2.0 * E_new  / mₑ)  # relative velocity of emitted (new) electron
+    g     = √(2.0 * E_orig / m₁)  # relative velocity of incoming (original) electron
+    g_new = √(2.0 * E_new  / m₁)  # relative velocity of emitted (new) electron
     
     # scattering angles
     χ     = acos(√(E_orig / E))   # scattering angle for incoming electron
@@ -121,10 +141,10 @@ function ionization_collision(g⃗, w⃗, mₑ, M, E_iz, Ē)
 
     # compute new velocity of original electron
     g⃗′ = post_collision_rotations(g ,θ, ϕ, χ, η)
-    v⃗′ = w⃗ .+ M/(mₑ+M) .* g⃗′
+    v⃗′ = w⃗ .+ m₂/(m₁+m₂) .* g⃗′
 
     # compute new velocity of new electron
     g⃗′_new = post_collision_rotations(g_new ,θ, ϕ, χ_new, η_new)
-    v⃗′_new = w⃗ .+ M/(mₑ+M) .* g⃗′_new
+    v⃗′_new = w⃗ .+ m₂/(m₁+m₂) .* g⃗′_new
     return v⃗′, v⃗′_new
 end

@@ -20,7 +20,7 @@ function relative_velocity(v⃗₁, v⃗₂)
 end
 
 function center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
-    w⃗ = (m₁ * v⃗₁ + m₂ * v⃗₂) / (m₁ + m₂)
+    w⃗ = @. (m₁ * v⃗₁ + m₂ * v⃗₂) / (m₁ + m₂)
     return w⃗
 end
 
@@ -30,10 +30,10 @@ function kinetic_energy(m, v)
     return 1/2 * m * v^2
 end
 
-function energy_in_collision(μ, g)
-    # μ: reduced mass
-    # g: relative velocity amplitude
-    return kinetic_energy(μ, g)
+function kinetic_energy(m, v⃗::Vector{Float64})
+    # m: mass
+    # v: velocity
+    return 1/2 * m * sum(v⃗.^2)
 end
 
 function absolute_value(v⃗)

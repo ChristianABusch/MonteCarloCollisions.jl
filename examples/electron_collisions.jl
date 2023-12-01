@@ -22,42 +22,24 @@ function electron_collisions()
     σ_iz  = linear_interpolation([0.0, E_exc-δ, E_exc, 1000], [0.0, 0.0, 1e-19, 1e-19])
     σ_tot(E) = σ_ela(E) + σ_exc(E) + σ_iz(E)
 
-    # check for collisions and execute them if one occurs    
+    # check for collisions and execute them if one occurs 
     g⃗ = relative_velocity(v⃗₁, v⃗₂)
-    w⃗ = center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
-    μ = reduced_mass(m₁, m₂)
     g = absolute_value(g⃗)
-    E = to_eV(energy_in_collision(μ, g))
+    μ = reduced_mass(m₁, m₂)   
+    E = to_eV(kinetic_energy(μ, g⃗))
 
     P_tot = collision_probability(σ_tot(E), n, g, dt) # total probability of a collision
 
     if rand() < P_tot
         # select which process occurs
-        r = rand()
+        i_process = select_collision([σ_ela(E), σ_exc(E), σ_iz(E)])
 
-        # segment the interval [0,1] according to the probability of a collision occuring
-        P_ell = σ_ela(E)/σ_tot(E)
-        P_exc = (σ_exc(E) + σ_ela(E))/σ_tot(E)
-        P_iz  = (σ_exc(E) + σ_ela(E) + σ_iz(E))/σ_tot(E)
-
-        if r < P_ell
-            v⃗₁′ = isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
-
-            E  = round(E, digits = 2)
-            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
-            println("elastic collision occured. Initial energy : $(E), final energy: $(E′)")
-        elseif r < P_exc
-            v⃗₁′ = excitation_collision(g⃗, w⃗, m₁, m₂, E_exc)
-
-            E  = round(E, digits = 2)
-            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
-            println("excitation collision occured. Initial energy : $(E), final energy: $(E′), ΔE = $(E-E′)")
-        elseif r < P_iz
-            v⃗₁′, v⃗_new = ionization_collision(g⃗, w⃗, m₁, m₂, E_iz, Ē[:Ar])
-
-            E  = round(E, digits = 2)
-            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
-            println("ionization collision occured. Initial energy : $(E), final energy: $(E′), ΔE = $(E-E′)")
+        if i_process == 1
+            v⃗₁′ = isotropic_elastic_collision(v⃗₁, v⃗₂, m₁, m₂)
+        elseif i_process == 2
+            v⃗₁′ = excitation_collision(v⃗₁, v⃗₂, m₁, m₂, E_exc)
+        elseif i_process == 3
+            v⃗₁′, v⃗_new = ionization_collision(v⃗₁, v⃗₂, m₁, m₂, E_iz, Ē[:Ar])
         end
     end
 end

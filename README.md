@@ -18,7 +18,7 @@ v⃗₁′ = excitation_collision(g⃗, w⃗, m₁, m₂, E_exc)
 v⃗₁′, v⃗_new_electron = ionization_collision(g⃗, w⃗, m₁, m₂, E_iz, Ē[:Ar])
 ```
 
-The package also includes some helpful functions when working with collisions. The collision probability for a collision of a particle with velocity $v$ with a gas with density $n$ and cross section $\sigma(v)$ over a time-intervall $dt$ is
+The package also includes some helpful functions when working with collisions. The collision probability for a collision of a particle with velocity $v$ with a gas with density $n$ and cross section $\sigma(v)$ over a time-interval $dt$ is
 ```julia
 P = collision_probability(σ, n, v, dt)
 ```
