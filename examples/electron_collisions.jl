@@ -29,7 +29,7 @@ function electron_collisions()
     g = absolute_value(g⃗)
     E = to_eV(energy_in_collision(μ, g))
 
-    P_tot = collision_probability(σ_tot(E), n, g, E, dt) # total probability of a collision
+    P_tot = collision_probability(σ_tot(E), n, g, dt) # total probability of a collision
 
     if rand() < P_tot
         # select which process occurs
