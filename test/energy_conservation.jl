@@ -1,14 +1,13 @@
 using MonteCarloCollision
-using Interpolations
 
 function energy_conservation_test()
     # electron
-    m₁  = 9.109e-31
-    v⃗₁  = [0.0, 3e6, 0.0] 
+    m₁ = 9.109e-31
+    v⃗₁ = [0.0, 3e6, 0.0] 
 
     # background gas atom
-    m₂  = 1.66e-27
-    v⃗₂  = fill(100, 3)
+    m₂ = 1.66e-27
+    v⃗₂ = fill(100, 3)
 
     E_exc = 10
     E_iz  = 12
@@ -21,18 +20,18 @@ function energy_conservation_test()
     E = to_eV(energy_in_collision(μ, g))
 
     # isotropic elastic scattering
-    v⃗₁′   = isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
-    E₁′   = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
+    v⃗₁′ = isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
+    E₁′ = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
     ΔE_el_iso = E - E₁′
 
     # backscatter elastic scattering
-    v⃗₁′   = backscatter_elastic_collision(g⃗, w⃗, m₁, m₂)
-    E₁′   = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
+    v⃗₁′ = backscatter_elastic_collision(g⃗, w⃗, m₁, m₂)
+    E₁′ = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
     ΔE_el_back = E - E₁′
 
     # excitation
-    v⃗₁′    = excitation_collision(g⃗, w⃗, m₁, m₂, E_exc)
-    E₁′    = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
+    v⃗₁′ = excitation_collision(g⃗, w⃗, m₁, m₂, E_exc)
+    E₁′ = to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′)))
     ΔE_exc = E - (E₁′ + E_exc)
 
     # ionization

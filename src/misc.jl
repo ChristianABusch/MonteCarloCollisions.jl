@@ -24,8 +24,6 @@ function center_of_mass_velocity(v⃗₁, m₁, v⃗₂, m₂)
     return w⃗
 end
 
-
-
 function kinetic_energy(m, v)
     # m: mass
     # v: velocity
