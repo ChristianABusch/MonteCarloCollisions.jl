@@ -123,7 +123,7 @@ function ionization_collision(v⃗₁, v⃗₂, m₁, m₂, E_iz, Ē)
     θ, ϕ = Euler_angles(g⃗)
 
     # Calculate new energies
-    E = kinetic_energy(μ, g) # electron energy
+    E = kinetic_energy(μ, g)      # electron energy
     E = E - to_J(E_iz)            # subtract energy loss for ionization
     
     E_new  = to_J(10.0 * tan(rand() * atan(to_eV(E)/(2*Ē)))) # energy of new electron (J. Chem. Phys. 55, 4100–4106 (1971))
