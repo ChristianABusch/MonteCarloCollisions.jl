@@ -22,7 +22,7 @@ The package also includes some helpful functions when working with collisions. T
 ```julia
 P = collision_probability(σ, n, v, dt)
 ```
-When it was determined that a collision occured by evaluating the total cross section, a collision process can be determined by partitioning the interval $[0,1]$ into blocks of size $P_k$, where $P_k=\sigma_k / \sigma_{tot}$. Then a random number is selected and the process into whose block the random number lands is selected.
+When it was determined that a collision occurred by evaluating the total cross-section, a collision process can be determined by partitioning the interval $[0,1]$ into blocks of size $P_k$, where $P_k=\sigma_k / \sigma_{tot}$. Then a random number is selected and the process into whose block the random number lands is selected.
 ```julia
 σ = [σ₁, σ₂, σ₃]
 i_process = select_collision(σ)

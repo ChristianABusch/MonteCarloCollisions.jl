@@ -92,13 +92,13 @@ function excitation_collision(v⃗₁, v⃗₂, m₁, m₂, E_exc)
     θ, ϕ = Euler_angles(g⃗)
 
     # Calculate new energy
-    E = kinetic_energy(μ, g)  # electron energy
-    E = E - to_J(E_exc)            # subtract energy loss for excitation
+    E = kinetic_energy(μ, g)     # electron energy
+    E = E - to_J(E_exc)          # subtract energy loss for excitation
     
     # scattering angles
-    g = √(2.0 * E / μ)             # relative velocity after energy loss
-    χ = acos(1.0 - 2.0 * rand())   # isotropic scattering
-    η = 2π * rand()                # azimuthal angle
+    g = √(2.0 * E / μ)           # relative velocity after energy loss
+    χ = acos(1.0 - 2.0 * rand()) # isotropic scattering
+    η = 2π * rand()              # azimuthal angle
 
     # compute new velocities
     g⃗′ = post_collision_rotations(g ,θ, ϕ, χ, η)
@@ -122,20 +122,21 @@ function ionization_collision(v⃗₁, v⃗₂, m₁, m₂, E_iz, Ē)
     # Euler angles
     θ, ϕ = Euler_angles(g⃗)
 
-    # Calculate new energies
+    # Subtract ionization energy 
     E = kinetic_energy(μ, g)      # electron energy
     E = E - to_J(E_iz)            # subtract energy loss for ionization
     
+    # split remaining energy up between the original electron and the newly freed one
     E_new  = to_J(10.0 * tan(rand() * atan(to_eV(E)/(2*Ē)))) # energy of new electron (J. Chem. Phys. 55, 4100–4106 (1971))
     E_orig = E - E_new                                       # energy of old electron
     
+    # relative velocities of the two electrons
     g     = √(2.0 * E_orig / m₁)  # relative velocity of incoming (original) electron
     g_new = √(2.0 * E_new  / m₁)  # relative velocity of emitted (new) electron
     
     # scattering angles
     χ     = acos(√(E_orig / E))   # scattering angle for incoming electron
     χ_new = acos(√(E_new  / E))   # scattering angle for emitted electron
-    
     η     = 2π * rand()           # azimuthal angle for incoming electron
     η_new = η + π                 # azimuthal angle for emitted electron
 
