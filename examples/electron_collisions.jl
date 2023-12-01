@@ -43,30 +43,21 @@ function electron_collisions()
         if r < P_ell
             v⃗₁′ = isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
 
-            g⃗′  = relative_velocity(v⃗₁′, v⃗₂)
-            g   = absolute_value(g⃗′)
-            E′  = to_eV(energy_in_collision(μ, g))
-            E, E′ = round(E, digits = 2), round(E′, digits = 2)
+            E  = round(E, digits = 2)
+            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
             println("elastic collision occured. Initial energy : $(E), final energy: $(E′)")
-
         elseif r < P_exc
             v⃗₁′ = excitation_collision(g⃗, w⃗, m₁, m₂, E_exc)
 
-            g⃗′  = relative_velocity(v⃗₁′, v⃗₂)
-            g   = absolute_value(g⃗′)
-            E′  = to_eV(energy_in_collision(μ, g))
-            E, E′ = round(E, digits = 2), round(E′, digits = 2)
+            E  = round(E, digits = 2)
+            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
             println("excitation collision occured. Initial energy : $(E), final energy: $(E′), ΔE = $(E-E′)")
-
         elseif r < P_iz
             v⃗₁′, v⃗_new = ionization_collision(g⃗, w⃗, m₁, m₂, E_iz, Ē[:Ar])
 
-            g⃗′  = relative_velocity(v⃗₁′, v⃗₂)
-            g   = absolute_value(g⃗′)
-            E′  = to_eV(energy_in_collision(μ, g))
-            E, E′ = round(E, digits = 2), round(E′, digits = 2)
+            E  = round(E, digits = 2)
+            E′ = round(to_eV(kinetic_energy(m₁, absolute_value(v⃗₁′))), digits = 2)
             println("ionization collision occured. Initial energy : $(E), final energy: $(E′), ΔE = $(E-E′)")
-
         end
     end
 end
