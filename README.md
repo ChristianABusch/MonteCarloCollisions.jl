@@ -1,10 +1,10 @@
 # MonteCarloCollision
 ## Overview
 This package implements Monte-Carlo collisions for 
--isotropic elastic scattering
--excitation of an atom/molecule
--backward scattering (charge exchange)
--ionization collisions
+- isotropic elastic scattering
+- excitation of an atom/molecule
+- backward scattering (charge exchange)
+- ionization collisions
 
 Explanations for the calculations can be found in "Zoltán Donkó et al 2021 Plasma Sources Sci. Technol. 30 095017".
 
