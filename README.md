@@ -2,7 +2,7 @@
 This package implements Monte-Carlo collisions for isotropic elastic scattering, excitation of an atom/molecule, backward scattering (charge exchange) and ionization collisions. Explanations for the calculations can be found in "Zoltán Donkó et al 2021 Plasma Sources Sci. Technol. 30 095017".
 
 # API
-Let $\vec{v}_1$ and $m_1$ be the velocity and mass of the scattering particle (electron here) and  $\vec{v}_2$ and $m_2$ the velocity and mass of the target particle (atom here). $\vec{g}=\vec{v}_1 - \vec{v}_2$ is the relative velocity and $\vec{w$$ the center of mass velocity. 
+Let $\vec{v}_1$ and $m_1$ be the velocity and mass of the scattering particle (electron here) and  $\vec{v}_2$ and $m_2$ the velocity and mass of the target particle (atom here). $\vec{g}=\vec{v}_1 - \vec{v}_2$ is the relative velocity and $\vec{w}$ the center of mass velocity. 
 The velocities after different types of collisions can then be calculated as:
 ```julia
 v⃗₁′ = isotropic_elastic_collision(g⃗, w⃗, m₁, m₂)
