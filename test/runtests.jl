@@ -2,5 +2,5 @@ using MonteCarloCollision
 using Test
 
 @testset "MonteCarloCollision.jl" begin
-    # Write your tests here.
+    @test include("energy_conservation.jl")
 end
