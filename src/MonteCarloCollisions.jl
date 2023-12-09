@@ -1,4 +1,4 @@
-module MonteCarloCollision
+module MonteCarloCollisions
 
 include("constants.jl")
 include("misc.jl")
