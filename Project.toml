@@ -1,4 +1,4 @@
-name = "MonteCarloCollision"
+name = "MonteCarloCollisions"
 uuid = "380541f5-4e53-48de-900f-81b1b544904f"
 authors = ["Christian Busch"]
 version = "1.0.0-DEV"

@@ -127,7 +127,7 @@ function ionization_collision(v⃗₁, v⃗₂, m₁, m₂, E_iz, Ē)
     E = E - to_J(E_iz)            # subtract energy loss for ionization
     
     # split remaining energy up between the original electron and the newly freed one
-    E_new  = to_J(10.0 * tan(rand() * atan(to_eV(E)/(2*Ē)))) # energy of new electron (J. Chem. Phys. 55, 4100–4106 (1971))
+    E_new  = to_J(Ē * tan(rand() * atan(to_eV(E)/(2*Ē))))    # energy of new electron (J. Chem. Phys. 55, 4100–4106 (1971))
     E_orig = E - E_new                                       # energy of old electron
     
     # relative velocities of the two electrons

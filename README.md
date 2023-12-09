@@ -12,6 +12,7 @@ Explanations for the calculations can be found in "Zoltán Donkó et al 2021 Pla
 Let $\vec{v}_1$ and $m_1$ be the velocity and mass of the scattering particle (electron here) and  $\vec{v}_2$ and $m_2$ the velocity and mass of the target particle (atom here).
 The velocities of the electron after the different types of collisions can then be calculated as:
 ```julia
+using MonteCarloCollisions
 v⃗₁′ = isotropic_elastic_collision(v⃗₁, v⃗₂, m₁, m₂)
 v⃗₁′ = backscatter_elastic_collision(v⃗₁, v⃗₂, m₁, m₂)
 v⃗₁′ = excitation_collision(v⃗₁, v⃗₂, m₁, m₂, E_exc)
