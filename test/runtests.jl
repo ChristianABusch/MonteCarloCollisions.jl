@@ -1,4 +1,4 @@
-using MonteCarloCollision
+using MonteCarloCollisions
 using Test
 
 @testset "MonteCarloCollision.jl" begin

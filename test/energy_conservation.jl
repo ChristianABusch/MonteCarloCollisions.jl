@@ -1,4 +1,4 @@
-using MonteCarloCollision
+using MonteCarloCollisions
 
 function energy_conservation_test()
     # electron
