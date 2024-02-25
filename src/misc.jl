@@ -48,6 +48,13 @@ function relative_kinetic_energy(v⃗₁, m₁, v⃗₂, m₂)
     return E
 end
 
+function relative_energy_and_velocity(v⃗, v⃗_target, m, m_target)
+    g = √((v⃗[1]-v⃗_target[1])^2 + (v⃗[2]-v⃗_target[2])^2 + (v⃗[3]-v⃗_target[3])^2)
+    μ = reduced_mass(m, m_target)
+    E = kinetic_energy(μ, g)
+    return E, g
+end
+
 function partition_one_by_cross_sections(σ::Vector{Float64})
     # Partition the interval [0,1] into block of size Pₖ where Pₖ=σₖ/σₜₒₜ
     σₜₒₜ = sum(σ)
